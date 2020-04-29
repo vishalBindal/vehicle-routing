@@ -1,17 +1,20 @@
 <html>
     <head>
         <title>Vehicle routing!</title>
-        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <h3>Locations</h3>
-        <label for="no-locations">No of locations: </label><input type="number" id="num_loc"><br><br>
-        <button id="confirm-locations" type="button">Enter coordinates and requirements of each location</button>
-        <br>
-        <p>Note: Enter float values in coordinates, integer values in requirements (in any unit of choice). Enter 0 in requirement for depot's location. </p>
-        <br>
+        <p>Click on the map to obtain coordinates of locations. 
+            You can then enter the requirements (demands) associated with each location below. </p>
+        <div id="map">
+        </div>
+        <button id="reset-locations" type="button">Reset locations</button>
         <ol id="coordi">
         </ol>
+        <!-- <label for="no-locations">No of locations: </label><input type="number" id="num_loc"><br><br>
+        <br> -->
+        <p>Note: Enter only integer values in requirements (in any unit of choice). For the depot's loction, enter 0. </p>
         <ol id="req">
         </ol>
         
@@ -24,11 +27,13 @@
         
         <h3>Other information</h3>
         <label for="depot">Depot number (among the locations entered): </label><input type="number" id="depot" value="1">
-        
+
         <h3>Results</h3>
         <button id="submit" type="button">Generate results!</button>
         <div id="result">
         </div>
         <script src="main.js"></script>
+        <script async defer 
+        src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap"></script>
     </body>
 </html>

@@ -51,17 +51,10 @@ let sampleCapacityElement = document.createElement('li');
 sampleCapacityElement.innerHTML = '<label for="cap">Capacity:</label><input type="number" value="0">'
 let capacityListWrapper = document.getElementById('capacities');
 
-let locationButton = document.getElementById('confirm-locations');
-locationButton.onclick = function(event) {
-    coordinateListWrapper.innerHTML="";
-    requirementListWrapper.innerHTML="";
-    for(let i=0;i<document.getElementById('num_loc').value;i++)
-        {
-            let newCoordinateElem = sampleCoordinateElement.cloneNode(true);
-            coordinateListWrapper.append(newCoordinateElem);
-            let newRequirementElem = sampleRequirementElement.cloneNode(true);
-            requirementListWrapper.append(newRequirementElem);
-        }
+let resetButton = document.getElementById('reset-locations');
+resetButton.onclick = function(event){
+    coordinateListWrapper.innerHTML = "";
+    requirementListWrapper.innerHTML = "";
 }
 
 let vehicleButton = document.getElementById('confirm-vehicles');
@@ -142,3 +135,42 @@ let updateResults = ((response)=>
         resultDiv.innerHTML = 'Solution not found :(';
     }
 });
+
+function parseTuple(t) {
+    return JSON.parse(t.replace(/\(/g, "[").replace(/\)/g, "]"));
+}
+
+function initMap() {
+    var myLatlng = {lat: 28.548700, lng: 77.183601};
+
+    var map = new google.maps.Map(
+        document.getElementById('map'), {zoom: 16, center: myLatlng});
+
+    // Create the initial InfoWindow.
+    var infoWindow = new google.maps.InfoWindow(
+        {content: 'Click the map to get Lat/Lng!', position: myLatlng});
+    infoWindow.open(map);
+
+    // Configure the click listener.
+    map.addListener('click', function(mapsMouseEvent) {
+      // Close the current InfoWindow.
+      infoWindow.close();
+
+      // Create a new InfoWindow.
+      infoWindow = new google.maps.InfoWindow({position: mapsMouseEvent.latLng});
+      infoWindow.setContent(mapsMouseEvent.latLng.toString());
+      infoWindow.open(map);
+
+      let coordinate = parseTuple(mapsMouseEvent.latLng.toString());
+      console.log(coordinate);
+
+      let newCoordinateElem = sampleCoordinateElement.cloneNode(true);
+      let ls = newCoordinateElem.getElementsByTagName('INPUT');
+      ls[0].value = coordinate[0];
+      ls[1].value = coordinate[1];
+      coordinateListWrapper.append(newCoordinateElem);
+
+      let newRequirementElem = sampleRequirementElement.cloneNode(true);
+      requirementListWrapper.append(newRequirementElem);
+    });
+  }
