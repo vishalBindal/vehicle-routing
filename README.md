@@ -14,7 +14,7 @@ Note: python3 and pip should be installed
 
 - Create a file 'key.py' with the contents:
 ``` 
-API_KEY = your_api_key
+API_KEY = 'your_api_key'
 ```
 Replace your_api_key with your own API key with google distance matrix API enabled.
 
@@ -23,6 +23,5 @@ Replace your_api_key with your own API key with google distance matrix API enabl
 pip install falcon cython gunicorn
 gunicorn vrp_api -b :16000 --reload
 ```
-You can replace 16000 with any other port of your choice
 
 - Open index.html in your browser. Enter the values and click on 'generate results'.

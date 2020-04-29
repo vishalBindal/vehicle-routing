@@ -24,12 +24,16 @@ let sendRequest = function(){
         if(xhr.status != 200)
         {
             console.log(`Error ${xhr.status}: ${xhr.statusText}`);
+            let resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `Error ${xhr.status}: ${xhr.statusText}`;
+            window.scrollTo(0,document.body.scrollHeight);
         }
         else
         {
             let response = JSON.parse(xhr.response);
             console.log(response);
             updateResults(response);
+            window.scrollTo(0,document.body.scrollHeight);
         }       
     }
 }
@@ -118,19 +122,23 @@ let updateResults = ((response)=>
         {
             let div=document.createElement('div');
             let str = `<h5>Vehicle ${i+1}</h5>\
-                    Distance travelled: ${distances[i]} <br>\
+                    Round-trip time (minutes): ${(distances[i]/60).toFixed(2)} <br>\
                     Load carried: ${loads[i]} <br>\
-                    Route: `;
+                    Route:<br>`;
             for(let j=0;j<routes[i].length-1;j++)
-                str += `${routes[i][j]} (Load: ${load_details[i][j]} ) -> `;
-            str += `${routes[i][routes[i].length-1]} (Load: ${load_details[i][routes.length-1]} )<br><br>`;
+                str += `Location ${routes[i][j]+1} (Load: ${load_details[i][j]}) -> `;
+            str += `Location ${routes[i][routes[i].length-1]} (Load: ${load_details[i][routes.length-1]} )<br><br>`;
             div.innerHTML = str;
             resultDiv.append(div);
         }
         let div = document.createElement('div');
-        div.innerHTML = `<h4> Statistics </h4> Total distance : ${total_distance} <br>\
-                    Maximum distance : ${max_distance} <br>\
+        div.innerHTML = `<h4> Statistics </h4> \
+                    Maximum round-trip time (minutes): ${(max_distance/60).toFixed(2)} <br>\
+                    Total time (cumulative time of all vehicles, in minutes): ${(total_distance/60).toFixed(2)} <br>\
                     Total load : ${total_load} <br>`
         resultDiv.append(div);
+    }
+    else{
+        resultDiv.innerHTML = 'Solution not found :(';
     }
 });
