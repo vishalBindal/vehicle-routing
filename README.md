@@ -25,4 +25,4 @@ gunicorn vrp_api -b :16000 --reload
 ```
 You can replace 16000 with any other port of your choice
 
-- Open index.html in your browser 
+- Open index.html in your browser. Enter the values and click on 'generate results'.
