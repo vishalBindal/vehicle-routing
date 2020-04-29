@@ -5,19 +5,30 @@
     </head>
     <body>
         <h3>Locations</h3>
+        <label for="no-locations">No of locations: </label><input type="number" id="num_loc"><br><br>
+        <button id="confirm-locations" type="button">Enter coordinates and requirements of each location</button>
+        <br>
+        <p>Note: Enter float values in coordinates, integer values in requirements (in any unit of choice). Enter 0 in requirement for depot's location. </p>
+        <br>
         <ol id="coordi">
-            <li><label for="x">x:</label><input type="number" value="0">   <label for="y">y:</label><input type="number" value="0"></li>
         </ol>
-        <button id="button" type="button">Add a new location</button>
+        <ol id="req">
+        </ol>
+        
+        <h3>Vehicles</h3>
+        <label for="no-vehicles">No of vehicles: </label><input type="number" id="num_veh"><br><br>
+        <button id="confirm-vehicles" type="button">Enter vehicle capacities</button>
+        <br><p>Note: Enter integer values in capacities (in the same unit chosen for requirements) </p><br>
+        <ol id="capacities">
+        </ol>
+        
         <h3>Other information</h3>
-        <label for="no">No of vehicles: </label><input type="number" id="num_veh"><br><br>
-        <label for="depot">Depot index: </label><input type="number" id="depot">
+        <label for="depot">Depot number (among the locations entered): </label><input type="number" id="depot" value="1">
+        
         <h3>Results</h3>
         <button id="submit" type="button">Generate results!</button>
         <div id="result">
-
         </div>
-        <script src="map.js"></script>
         <script src="main.js"></script>
     </body>
 </html>

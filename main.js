@@ -3,10 +3,12 @@
 let cfg = {
     'addresses' : [],
     'depot' : 0,
-    'num_vehicles' : 0
+    'num_vehicles' : 0,
+    'demands' : [],
+    'vehicle_capacities' : []
 }
 
-let post_url = "http://localhost:18000/vrpapi"
+let post_url = "http://localhost:16000/vrpapi"
 
 let sendRequest = function(){
     let req = {
@@ -32,19 +34,45 @@ let sendRequest = function(){
     }
 }
 
-let sampleListElem = document.querySelector('#coordi>li').cloneNode(true);
-let listWrapper = document.getElementById('coordi');
+let sampleCoordinateElement = document.createElement('li');
+sampleCoordinateElement.innerHTML = '<label for="x">Latitude:</label><input type="text" value="0.0">\
+                                    <label for="y">Longitude:</label><input type="text" value="0.0">'
+let coordinateListWrapper = document.getElementById('coordi');
 
-let button = document.getElementById('button');
-button.onclick = function(event) {
-    let newListElem = sampleListElem.cloneNode(true);
-    listWrapper.append(newListElem);
+let sampleRequirementElement = document.createElement('li');
+sampleRequirementElement.innerHTML = '<label for="req">Requirement: </label><input type="number" value="0">'
+let requirementListWrapper = document.getElementById('req');
+
+let sampleCapacityElement = document.createElement('li');
+sampleCapacityElement.innerHTML = '<label for="cap">Capacity:</label><input type="number" value="0">'
+let capacityListWrapper = document.getElementById('capacities');
+
+let locationButton = document.getElementById('confirm-locations');
+locationButton.onclick = function(event) {
+    coordinateListWrapper.innerHTML="";
+    requirementListWrapper.innerHTML="";
+    for(let i=0;i<document.getElementById('num_loc').value;i++)
+        {
+            let newCoordinateElem = sampleCoordinateElement.cloneNode(true);
+            coordinateListWrapper.append(newCoordinateElem);
+            let newRequirementElem = sampleRequirementElement.cloneNode(true);
+            requirementListWrapper.append(newRequirementElem);
+        }
+}
+
+let vehicleButton = document.getElementById('confirm-vehicles');
+vehicleButton.onclick = function(event) {
+    capacityListWrapper.innerHTML="";
+    for(let i=0;i<document.getElementById('num_veh').value;i++)
+        {
+            let newCapacityElem = sampleCapacityElement.cloneNode(true);
+            capacityListWrapper.append(newCapacityElem);
+        }
 }
 
 let submitButton = document.getElementById('submit');
 submitButton.onclick = function(event){
     let ls = document.querySelectorAll('#coordi > li > input');
-    console.log(ls);
     let addresses = [];
     for(let i=0;i<ls.length/2;i++)
         {
@@ -53,7 +81,20 @@ submitButton.onclick = function(event){
         }
     cfg['addresses'] = addresses;
     cfg['num_vehicles'] = document.getElementById('num_veh').value;
-    cfg['depot'] = document.getElementById('depot').value;
+    cfg['depot'] = document.getElementById('depot').value - 1;
+
+    ls = document.querySelectorAll('#req > li > input');
+    let requirements = [];
+    for (let inp of ls)
+        requirements.push(inp.value)
+    cfg['demands'] = requirements
+
+    ls = document.querySelectorAll('#capacities > li > input');
+    let capacities = [];
+    for (let inp of ls)
+        capacities.push(inp.value)
+    cfg['vehicle_capacities'] = capacities
+
     console.log(cfg);
     sendRequest();
     
@@ -69,15 +110,27 @@ let updateResults = ((response)=>
         let distances = response.distances;
         let max_distance = response.max_distance;
         let routes = response.routes;
+        let loads = response.loads;
+        let total_distance = response.total_distance;
+        let total_load = response.total_load;
+        let load_details = response.load_details;
         for(let i=0;i<distances.length;i++)
         {
             let div=document.createElement('div');
-            let str = `<h5>Vehicle ${i+1}</h5> Distance travelled: ${distances[i]} <br> Route: `;
+            let str = `<h5>Vehicle ${i+1}</h5>\
+                    Distance travelled: ${distances[i]} <br>\
+                    Load carried: ${loads[i]} <br>\
+                    Route: `;
             for(let j=0;j<routes[i].length-1;j++)
-                str += `${routes[i][j]} -> `;
-            str += `${routes[i][routes[i].length-1]}<br><br>`;
+                str += `${routes[i][j]} (Load: ${load_details[i][j]} ) -> `;
+            str += `${routes[i][routes[i].length-1]} (Load: ${load_details[i][routes.length-1]} )<br><br>`;
             div.innerHTML = str;
             resultDiv.append(div);
         }
+        let div = document.createElement('div');
+        div.innerHTML = `<h4> Statistics </h4> Total distance : ${total_distance} <br>\
+                    Maximum distance : ${max_distance} <br>\
+                    Total load : ${total_load} <br>`
+        resultDiv.append(div);
     }
 });
