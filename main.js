@@ -11,30 +11,36 @@ let cfg = {
 let post_url = "http://localhost:16000/vrpapi"
 
 let sendRequest = function(){
-    let req = {
-        "cfg":cfg
-    };
-    let json = JSON.stringify(req);
-    console.log(json);
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', post_url);
-    xhr.send(json);
-    
-    xhr.onload = function(){
-        if(xhr.status != 200)
-        {
-            console.log(`Error ${xhr.status}: ${xhr.statusText}`);
-            let resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = `Error ${xhr.status}: ${xhr.statusText}`;
-            window.scrollTo(0,document.body.scrollHeight);
+    if (cfg.depot < 0) {
+        alert("depot not set");
+    } else if(cfg.num_vehicles.length == 0) {
+        alert("vehicles not added");
+    }else {
+        let req = {
+            "cfg":cfg
+        };
+        let json = JSON.stringify(req);
+        console.log(json);
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', post_url);
+        xhr.send(json);
+        
+        xhr.onload = function(){
+            if(xhr.status != 200)
+            {
+                console.log(`Error ${xhr.status}: ${xhr.statusText}`);
+                let resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `Error ${xhr.status}: ${xhr.statusText}`;
+                window.scrollTo(0,document.body.scrollHeight);
+            }
+            else
+            {
+                let response = JSON.parse(xhr.response);
+                console.log(response);
+                updateResults(response);
+                window.scrollTo(0,document.body.scrollHeight);
+            }       
         }
-        else
-        {
-            let response = JSON.parse(xhr.response);
-            console.log(response);
-            updateResults(response);
-            window.scrollTo(0,document.body.scrollHeight);
-        }       
     }
 }
 
@@ -155,7 +161,6 @@ submitButton.onclick = function(event){
 
     console.log(cfg);
     sendRequest();
-    
 }
 
 let updateResults = ((response)=>
@@ -175,21 +180,21 @@ let updateResults = ((response)=>
         for(let i=0;i<distances.length;i++)
         {
             let div=document.createElement('div');
-            let str = `<strong>Vehicle ${i+1}</strong>\
+            let str = `<div class="card shadowContainer"><div class="card-body"><strong>Vehicle ${i+1}</strong>\
                     Round-trip time (minutes): ${(distances[i]/60).toFixed(2)} <br>\
                     Load carried: ${loads[i]} <br>\
                     Route:<br>`;
             for(let j=0;j<routes[i].length-1;j++)
                 str += `Location ${routes[i][j]+1} (Load: ${load_details[i][j]}) -> `;
-            str += `Location ${routes[i][routes[i].length-1]+1} (Load: ${load_details[i][routes.length-1]} )<br><br>`;
+            str += `Location ${routes[i][routes[i].length-1]+1} (Load: ${load_details[i][routes.length-1]} )</div></div><br>`;
             div.innerHTML = str;
             resultDiv.append(div);
         }
         let div = document.createElement('div');
-        div.innerHTML = `<strong> Statistics </strong> \
+        div.innerHTML = `<div class="card shadowContainer bg-secondary"><div class="card-body"><strong> Statistics </strong> \
                     Maximum round-trip time (minutes): ${(max_distance/60).toFixed(2)} <br>\
                     Total time (cumulative time of all vehicles, in minutes): ${(total_distance/60).toFixed(2)} <br>\
-                    Total load : ${total_load} <br>`
+                    Total load : ${total_load} <br></div></div>`
         resultDiv.append(div);
     }
     else{
