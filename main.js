@@ -38,23 +38,69 @@ let sendRequest = function(){
     }
 }
 
-let sampleCoordinateElement = document.createElement('li');
-sampleCoordinateElement.innerHTML = '<label for="x">Latitude:</label><input type="text" value="0.0">\
-                                    <label for="y">Longitude:</label><input type="text" value="0.0">'
-let coordinateListWrapper = document.getElementById('coordi');
-
-let sampleRequirementElement = document.createElement('li');
-sampleRequirementElement.innerHTML = '<label for="req">Requirement: </label><input type="number" value="0">'
-let requirementListWrapper = document.getElementById('req');
-
 let sampleCapacityElement = document.createElement('li');
 sampleCapacityElement.innerHTML = '<label for="cap">Capacity:</label><input type="number" value="0">'
 let capacityListWrapper = document.getElementById('capacities');
 
+let sampleLocationElement = document.createElement('li');
+sampleLocationElement.innerHTML = '<h4> Location <span class="location-no"></span> <span class="coordinates"></span> </h4>\
+                                <label for="req">Requirement: </label><input type="number" value="0" class="req-input">\
+                                <button type="button" onclick="removeLocation(this.parentNode.id)">Discard location</button>\
+                                <button type="button" onclick="markDepot(this.parentNode.id)">Mark as depot</button>'
+let locationListWrapper = document.getElementById('locations');
+
+let coordinates = [];
+let noOfLocations = 0;
+
 let resetButton = document.getElementById('reset-locations');
 resetButton.onclick = function(event){
-    coordinateListWrapper.innerHTML = "";
-    requirementListWrapper.innerHTML = "";
+    locationListWrapper.innerHTML = "";
+    coordinates = [];
+    noOfLocations = 0;
+    depot = -1;
+    depotElement.innerHTML = "Not set";
+}
+
+let removeLocation = function(id)
+{
+    let elem = document.getElementById(id);
+    elem.parentNode.removeChild(elem);
+
+    let idint = parseInt(id.replace('location-',''));
+    coordinates.splice(idint-1, 1);
+    noOfLocations -= 1;
+
+    if(idint==depot)
+    {
+        alert('depot not set!');
+        depot = -1;
+        depotElement.innerHTML = 'Not set';
+    }
+
+    let ls = document.querySelectorAll('#locations > li');
+    for(let l of ls)
+    {
+        let idelem = parseInt(l.id.replace('location-', ''));
+        if(idelem > idint)
+            {
+                l.id = 'location-'+(idelem - 1);
+                l.getElementsByClassName('location-no')[0].innerHTML = (idelem - 1);
+            }
+    }
+}
+
+let depot = -1;
+let depotElement = document.getElementById('depot-location');
+
+let markDepot = function(id)
+{
+    let idint = parseInt(id.replace('location-',''));
+    if(depot!=idint)
+    {
+        depotElement.innerHTML = idint;
+        alert(`depot marked to ${idint}!`);
+        depot = idint;
+    }
 }
 
 let vehicleButton = document.getElementById('confirm-vehicles');
@@ -69,18 +115,11 @@ vehicleButton.onclick = function(event) {
 
 let submitButton = document.getElementById('submit');
 submitButton.onclick = function(event){
-    let ls = document.querySelectorAll('#coordi > li > input');
-    let addresses = [];
-    for(let i=0;i<ls.length/2;i++)
-        {
-            let address = [ls[2*i].value, ls[2*i+1].value];
-            addresses.push(address);
-        }
-    cfg['addresses'] = addresses;
+    cfg['addresses'] = coordinates;
     cfg['num_vehicles'] = document.getElementById('num_veh').value;
-    cfg['depot'] = document.getElementById('depot').value - 1;
+    cfg['depot'] = depot;
 
-    ls = document.querySelectorAll('#req > li > input');
+    let ls = document.querySelectorAll('#locations > li > input');
     let requirements = [];
     for (let inp of ls)
         requirements.push(inp.value)
@@ -120,7 +159,7 @@ let updateResults = ((response)=>
                     Route:<br>`;
             for(let j=0;j<routes[i].length-1;j++)
                 str += `Location ${routes[i][j]+1} (Load: ${load_details[i][j]}) -> `;
-            str += `Location ${routes[i][routes[i].length-1]} (Load: ${load_details[i][routes.length-1]} )<br><br>`;
+            str += `Location ${routes[i][routes[i].length-1]+1} (Load: ${load_details[i][routes.length-1]} )<br><br>`;
             div.innerHTML = str;
             resultDiv.append(div);
         }
@@ -164,13 +203,12 @@ function initMap() {
       let coordinate = parseTuple(mapsMouseEvent.latLng.toString());
       console.log(coordinate);
 
-      let newCoordinateElem = sampleCoordinateElement.cloneNode(true);
-      let ls = newCoordinateElem.getElementsByTagName('INPUT');
-      ls[0].value = coordinate[0];
-      ls[1].value = coordinate[1];
-      coordinateListWrapper.append(newCoordinateElem);
-
-      let newRequirementElem = sampleRequirementElement.cloneNode(true);
-      requirementListWrapper.append(newRequirementElem);
+    coordinates.push(coordinate);
+    noOfLocations +=1;
+    let newLocationElem = sampleLocationElement.cloneNode(true);
+    newLocationElem.id = "location-"+noOfLocations;
+    newLocationElem.getElementsByClassName('coordinates')[0].innerHTML = "[" + coordinate.toString() + "]";
+    newLocationElem.getElementsByClassName('location-no')[0].innerHTML = noOfLocations;
+    locationListWrapper.append(newLocationElem);
     });
   }
