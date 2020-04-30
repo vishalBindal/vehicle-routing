@@ -9,7 +9,7 @@ This is an implementation of the capacitated vehicle routing problem (CVRP), whi
 
 For solving the CVRP, Google OR-tools are used, alongwith the google distance matrix API to calculate the (real-world) time taken to traverse between the given locations. For marking the coordinates conveniently, Google Maps Javascript API is used.
 
-## Instructions to run
+## Setup Instructions
 Note: python3 and pip should be installed
 
 - Clone the repo and change to the main directory
@@ -26,7 +26,7 @@ Replace your_api_key with your own API key enabled with Google distance matrix A
 ```
 Replace API_KEY in the string with your own API key enabled with Google maps Javascript API.
 
-- Run:
+- Set up python packages
 
 Check python version
 ```
@@ -40,16 +40,28 @@ $ python -m venv venv
 $ source venv/bin/activate
 ```
 
-To Run
+Make sure ortools, falcon, cython and gunicorn are installed.
 ```
 $ pip install ortools
 $ pip install falcon cython gunicorn
-$ gunicorn vrp_api -b :16000 --reload
 ```
 
-After using, if using virtual environment, deavtivate it
+After using, if using virtual environment, deactivate it
 ```
 $ deactivate
 ```
 
+## Instructions to run
+- If packages were installed in virtual environment above, run
+```
+source venv/bin/activate
+```
+- Run the API at port 16000
+```
+$ gunicorn vrp_api -b :16000 --reload
+```
 - Open index.html in your browser. Click on the desired locations in the map and enter the demand associated with each location. Enter the number of vehicles, the capacity of each vehicle and the depot number. Click on 'generate results', and if everything is set up correctly you should see the results.
+- After use, close the API at port 16000 using CTRL+C. If using virtual environment, deactivate by running
+```
+$ deactivate
+```
