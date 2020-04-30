@@ -195,21 +195,29 @@ let updateResults = ((response)=>
         for(let i=0;i<distances.length;i++)
         {
             let div=document.createElement('div');
+            if(routes[i].length==2)
+                {
+                    let str = `<div class="card shadowContainer"><div class="card-body"><strong>Vehicle ${i+1}</strong>\
+                    Unused</div></div>`;
+                    div.innerHTML = str;
+                    resultDiv.append(div);
+                    continue;
+                }
             let str = `<div class="card shadowContainer"><div class="card-body"><strong>Vehicle ${i+1}</strong>\
-                    Round-trip time (minutes): ${(distances[i]/60).toFixed(2)} <br>\
+                    Round-trip time: ${(distances[i]/60).toFixed(2)} minutes<br>\
                     Load carried: ${loads[i]} <br>\
                     <a href="${get_directions_url(routes[i])}" target="_blank">Get directions</a><br>\
                     Route:<br>`;
             for(let j=0;j<routes[i].length-1;j++)
-                str += `Location ${routes[i][j]+1} (Load: ${load_details[i][j]}) -> `;
-            str += `Location ${routes[i][routes[i].length-1]+1} (Load: ${load_details[i][routes.length-1]} )</div></div><br>`;
+                str += `Location ${routes[i][j]+1} -> `;
+            str += `Location ${routes[i][routes[i].length-1]+1}</div></div><br>`;
             div.innerHTML = str;
             resultDiv.append(div);
         }
         let div = document.createElement('div');
         div.innerHTML = `<div class="card shadowContainer bg-secondary"><div class="card-body"><strong> Statistics </strong> \
-                    Maximum round-trip time (minutes): ${(max_distance/60).toFixed(2)} <br>\
-                    Total time (cumulative time of all vehicles, in minutes): ${(total_distance/60).toFixed(2)} <br>\
+                    Maximum round-trip time: ${(max_distance/60).toFixed(2)} minutes<br>\
+                    Total time (cumulative time of all vehicles): ${(total_distance/60).toFixed(2)} minutes<br>\
                     Total load : ${total_load} <br></div></div>`
         resultDiv.append(div);
     }
