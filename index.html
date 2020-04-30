@@ -2,32 +2,74 @@
     <head>
         <title>Vehicle routing!</title>
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://kit.fontawesome.com/9ccf722acc.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <h3>Locations</h3>
-        <p>Click on the map to obtain coordinates of locations. 
-            You can then enter the requirements (demands) associated with each location below. </p>
-        <div id="map">
+        <header class="navbar customContainer">
+            <section class="navbar-section"></section>
+            <section class="navbar-center">
+                <a href="#" class="navbar-brand mr-2"><strong><i class="fas fa-route"></i> VEHICLE ROUTING</strong></a>
+            </section>
+            <section class="navbar-section">
+                <a href="https://github.com/vishalBindal/vehicle-routing" class="btn btn-link"><i class="fab fa-github"></i> GitHub</a>
+            </section>
+        </header>
+        <div class="divider"></div>
+        <div class="container customContainer">
+        <div class="columns">
+            <div class="column col-3 col-lg-2 col-xs-0"></div>
+                <div class="column col-6 col-lg-8 col-xs-12">
+                    <h3>Locations</h3>
+                    <p>Click on the map to obtain coordinates of locations. 
+                        You can then enter the requirements (demands) associated with each location below. </p>
+
+                    <div id="map" class="shadowContainer">
+                    </div>
+                    <br>
+                    <button class="btn" id="reset-locations" type="button">Reset locations</button>
+                    <br>
+                    <br>
+                    <p><strong>Note:</strong> Enter only integer values in requirements (in any unit of choice). For the depot's loction, enter 0. </p>
+                    <p>Depot's location: <span id="depot-location">Not set</span></p>
+                    <ul style="list-style-type:none" id="locations">
+                    </ul>
+                    
+                    <h3>Vehicles</h3>
+                    <label for="no-vehicles" class="form-label">No of vehicles: </label><input type="number" id="num_veh" class="form-input"><br>
+                    <button class="btn" id="confirm-vehicles" type="button">Enter vehicle capacities</button><br>
+                    <br><p>Note: Enter integer values in capacities (in the same unit chosen for requirements) </p>
+                    <ol id="capacities">
+                    </ol>
+                
+                    <h3>Results</h3>
+                    <button class="btn" id="submit" type="button">Generate results!</button>
+                    <div id="result">
+                </div>
+            </div>
+            <div class="column col-3 col-lg-2 col-xs-0"></div>
         </div>
-        <button id="reset-locations" type="button">Reset locations</button>
-        <p>Note: Enter only integer values in requirements (in any unit of choice). For the depot's loction, enter 0. </p>
-        <p>Depot's location: <span id="depot-location">Not set</span></p>
-        <ol id="locations">
-        </ol>
+        </div>
+        <div class="divider"></div>
+        <footer>
+            <br>
+            <div class="container">
+                <div class="columns">
+                    <div class="column col-1">
+                    </div>
+                    <div class="column col-10">
+                        <p class="textCenter"> Designed and built with by <span class="chip">Vishal Bindal</span> and <span class="chip">Vishal Singh</span> for Competitive Students I4 Challenge of <img style="vertical-align:middle;" src="src/images/IITDlogo.png" width="40px"> IIT DELHI. Licensed under the <a href="https://github.com/picturepan2/spectre/blob/master/LICENSE" target="_blank">MIT License</a>.</p>
+                    </div>
+                    <div class="column col-1"></div>
+                </div>
+            </div>
+        </footer>
         
-        <h3>Vehicles</h3>
-        <label for="no-vehicles">No of vehicles: </label><input type="number" id="num_veh"><br><br>
-        <button id="confirm-vehicles" type="button">Enter vehicle capacities</button>
-        <br><p>Note: Enter integer values in capacities (in the same unit chosen for requirements) </p><br>
-        <ol id="capacities">
-        </ol>
-       
-        <h3>Results</h3>
-        <button id="submit" type="button">Generate results!</button>
-        <div id="result">
-        </div>
         <script src="main.js"></script>
         <script async defer 
-        src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap"></script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxf1e_GCVL6g9U9Q3XoJbqM-wKWhQRoTI&callback=initMap"></script>
     </body>
 </html>

@@ -39,14 +39,21 @@ let sendRequest = function(){
 }
 
 let sampleCapacityElement = document.createElement('li');
-sampleCapacityElement.innerHTML = '<label for="cap">Capacity:</label><input type="number" value="0">'
+sampleCapacityElement.innerHTML = `<div class="input-group" style="display: inline-flex !important;"><label class="input-group-addon addon-sm" for="cap">Capacity:</label><input type="number" value="0" class="form-input input-sm capacity-input"></div>`;
+
 let capacityListWrapper = document.getElementById('capacities');
 
 let sampleLocationElement = document.createElement('li');
-sampleLocationElement.innerHTML = '<h4> Location <span class="location-no"></span> <span class="coordinates"></span> </h4>\
-                                <label for="req">Requirement: </label><input type="number" value="0" class="req-input">\
-                                <button type="button" onclick="removeLocation(this.parentNode.id)">Discard location</button>\
-                                <button type="button" onclick="markDepot(this.parentNode.id)">Mark as depot</button>'
+sampleLocationElement.innerHTML = '<div class="card shadowContainer" style="width: 95%;">\
+                                <div class="card-body">\
+                                <strong> Location <span class="location-no"></span> <span class="coordinates"></span></strong><br>\
+                                <label for="req">Requirement: </label><input type="number" value="0" class="req-input form-input">\
+                                </div>\
+                                <div class="card-footer">\
+                                <button class="btn btn-error btn-sm" type="button" onclick="removeLocation(this.parentNode.parentNode.parentNode.id)">Discard location</button>\
+                                <button class="btn btn-success btn-sm" type="button" onclick="markDepot(this.parentNode.parentNode.parentNode.id)">Mark as depot</button>\
+                                </div>\
+                                </div>';
 let locationListWrapper = document.getElementById('locations');
 
 let coordinates = [];
@@ -119,13 +126,13 @@ submitButton.onclick = function(event){
     cfg['num_vehicles'] = document.getElementById('num_veh').value;
     cfg['depot'] = depot;
 
-    let ls = document.querySelectorAll('#locations > li > input');
+    let ls = document.querySelectorAll('.req-input');
     let requirements = [];
     for (let inp of ls)
         requirements.push(inp.value)
     cfg['demands'] = requirements
 
-    ls = document.querySelectorAll('#capacities > li > input');
+    ls = document.querySelectorAll('.capacity-input');
     let capacities = [];
     for (let inp of ls)
         capacities.push(inp.value)
@@ -153,7 +160,7 @@ let updateResults = ((response)=>
         for(let i=0;i<distances.length;i++)
         {
             let div=document.createElement('div');
-            let str = `<h5>Vehicle ${i+1}</h5>\
+            let str = `<strong>Vehicle ${i+1}</strong>\
                     Round-trip time (minutes): ${(distances[i]/60).toFixed(2)} <br>\
                     Load carried: ${loads[i]} <br>\
                     Route:<br>`;
@@ -164,7 +171,7 @@ let updateResults = ((response)=>
             resultDiv.append(div);
         }
         let div = document.createElement('div');
-        div.innerHTML = `<h4> Statistics </h4> \
+        div.innerHTML = `<strong> Statistics </strong> \
                     Maximum round-trip time (minutes): ${(max_distance/60).toFixed(2)} <br>\
                     Total time (cumulative time of all vehicles, in minutes): ${(total_distance/60).toFixed(2)} <br>\
                     Total load : ${total_load} <br>`
