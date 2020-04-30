@@ -26,7 +26,7 @@ Replace API_KEY in the string with your own API key enabled with Google maps Jav
 
 - Run:
 ```
-pip install or-tools
+pip install ortools
 pip install falcon cython gunicorn
 gunicorn vrp_api -b :16000 --reload
 ```
