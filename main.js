@@ -10,6 +10,18 @@ let cfg = {
 
 let post_url = "http://localhost:16000/vrpapi"
 
+let changeDepotInList = function(idint) {
+    // clearing all the background colors
+    var items = locationListWrapper.getElementsByTagName("li");
+    for (var i = 0; i < items.length; ++i) {
+        if (i == (idint-1)) {
+            items[i].firstChild.classList.add("bg-secondary");
+        } else {
+            items[i].firstChild.classList.remove("bg-secondary");
+        }
+    }
+}
+
 let sendRequest = function(){
     if (cfg.depot < 0) {
         alert("depot not set");
@@ -71,6 +83,7 @@ resetButton.onclick = function(event){
     coordinates = [];
     noOfLocations = 0;
     depot = -1;
+    changeDepotInList(-1);
     depotElement.innerHTML = "Not set";
     for(let m of markers)
         m.setMap(null);
@@ -88,8 +101,9 @@ let removeLocation = function(id)
 
     if(idint==depot)
     {
-        alert('depot not set!');
+        // alert('depot not set!');
         depot = -1;
+        changeDepotInList(-1);
         depotElement.innerHTML = 'Not set';
     }
 
@@ -125,8 +139,9 @@ let markDepot = function(id)
     let idint = parseInt(id.replace('location-',''));
     if(depot!=idint)
     {
+        changeDepotInList(idint);
         depotElement.innerHTML = idint;
-        alert(`depot marked to ${idint}!`);
+        // alert(`depot marked to ${idint}!`);
         depot = idint;
     }
 }
