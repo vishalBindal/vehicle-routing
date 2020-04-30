@@ -10,6 +10,18 @@ let cfg = {
 
 let post_url = "http://localhost:16000/vrpapi"
 
+let changeDepotInList = function(idint) {
+    // clearing all the background colors
+    var items = locationListWrapper.getElementsByTagName("li");
+    for (var i = 0; i < items.length; ++i) {
+        if (i == (idint-1)) {
+            items[i].firstChild.classList.add("bg-secondary");
+        } else {
+            items[i].firstChild.classList.remove("bg-secondary");
+        }
+    }
+}
+
 let sendRequest = function(){
     if (cfg.depot < 0) {
         alert("depot not set");
@@ -71,6 +83,7 @@ resetButton.onclick = function(event){
     coordinates = [];
     noOfLocations = 0;
     depot = -1;
+    changeDepotInList(-1);
     depotElement.innerHTML = "Not set";
     for(let m of markers)
         m.setMap(null);
@@ -88,8 +101,9 @@ let removeLocation = function(id)
 
     if(idint==depot)
     {
-        alert('depot not set!');
+        // alert('depot not set!');
         depot = -1;
+        changeDepotInList(-1);
         depotElement.innerHTML = 'Not set';
     }
 
@@ -125,8 +139,9 @@ let markDepot = function(id)
     let idint = parseInt(id.replace('location-',''));
     if(depot!=idint)
     {
+        changeDepotInList(idint);
         depotElement.innerHTML = idint;
-        alert(`depot marked to ${idint}!`);
+        // alert(`depot marked to ${idint}!`);
         depot = idint;
     }
 }
@@ -255,6 +270,7 @@ let addMarker = function(position, label, map)
     markers.push(marker);
 }
 
+
 let get_directions_url = function(route)
 {
     let url = 'https://www.google.com/maps/dir/';
@@ -266,3 +282,12 @@ let get_directions_url = function(route)
     }
     return url;
 }
+
+let model1 = document.getElementById("modal1-challenge-statement");
+
+document.getElementById("model1-show-button").onclick = function() {model1.classList.add("active");};
+
+document.getElementById("model1-close-button2").onclick = function(){model1.classList.remove("active");};
+
+document.getElementById("model1-close-button").onclick = function(){model1.classList.remove("active");};
+

@@ -23,6 +23,28 @@
         <div class="columns">
             <div class="column col-3 col-lg-2 col-xs-0"></div>
                 <div class="column col-6 col-lg-8 col-xs-12">
+                    <blockquote>
+                        <p>Developed for Competitive Students I4 Challenge of IIT DELHI. Click here to see <a id="model1-show-button">challenge statement</a></p>
+                        
+                        <div class="modal" id="modal1-challenge-statement">
+                            <a class="modal-overlay" aria-label="Close"></a>
+                            <div class="modal-container">
+                              <div class="modal-header">
+                                <a href="#close" class="btn btn-clear float-right" id="model1-close-button" aria-label="Close"></a>
+                                <div class="modal-title h5">Challenge IV: Grocery Routing Problem</div>
+                              </div>
+                              <div class="modal-body">
+                                <div class="content">
+                                    <strong>Background: </strong>Recently the Government of India has imposed a curfew of 21 days to control the spread of n-COVID-19. The government wants to take up delivery of groceries and other essential  items  so  as  to  prevent  people  from  venturing  on  the  road.  In  New  Delhi,  the government has identified certain areas that can serve as warehouses and from where a set of delivery agents will take up the delivery and deliver it to individual homes. One such warehouse is in Hauz Khas and it has its set of delivery agents. Each delivery agent has a motorbike and it can hold up to a certain capacity of groceries. The demand (homes) is distributed throughout Hauz Khas. Every morning the supply vehicle comes at around 6AM and groceries are ready for delivery by 8AM.  The groceries have to be delivered to homes by 10 AM. The problem is to allocate routes for individual vehicles so that the demand allocated to that vehicle is satisfied and the total demand in Hauz Khas is also satisfied.<br><br>
+                                    <strong>Tasks and deliverables for students: </strong>This takes the form of a traveling salesman problem, and the challenge is to develop a user interface that the government or any other stakeholder can use to (a) assign a set of stops and associated demand to a set of delivery agents, based on their capacity; (b) develop an optimal route for each delivery agent. The user interface should be  a  simple,  no-frills  one  which  takes  as  input  (a)  the  set  of  delivery  agents,  with  their associated capacity; (b) the Google Maps locations (in the form of coordinates) of each stop (including  the  warehouse),  with  associated  demand.  The  application  should  calculate  the distance  between  each  location  using  Google  Maps  and  then  solve  the  TSP  and  provide  the load to be carried and optimal route for each delivery agent. Utilize  an  existing  integer  programming  formulation  of  the  TSP  and  use  a  solver  such  as CPLEX (which has APIs for multiple programming languages such as Python, Java, C++, etc.) to solve the problem.
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button class="btn btn-primary btn-sm" id="model1-close-button2">close</button>
+                              </div>
+                            </div>
+                          </div>
+                    </blockquote>
                     <h3>Locations</h3>
                     <p>Click on the map to obtain coordinates of locations. 
                         You can then enter the requirements (demands) associated with each location below. </p>
@@ -34,18 +56,22 @@
                     <br>
                     <br>
                     <p><strong>Note:</strong> Enter only integer values in requirements (in any unit of choice). For the depot's loction, enter 0. </p>
-                    <p>Depot's location: <span id="depot-location">Not set</span></p>
+                    <p><i class="fas fa-store"></i> Depot's location: <span id="depot-location">Not set</span></p>
                     <ul style="list-style-type:none" id="locations">
                     </ul>
-                    
-                    <h3>Vehicles</h3>
+
+                    <div class="divider"></div>
+                    <br>
+                    <h3><i class="fas fa-truck"></i> Vehicles</h3>
                     <label for="no-vehicles" class="form-label">No of vehicles: </label><input type="number" id="num_veh" class="form-input"><br>
                     <button class="btn" id="confirm-vehicles" type="button">Enter vehicle capacities</button><br>
                     <br><p>Note: Enter integer values in capacities (in the same unit chosen for requirements) </p>
                     <ol id="capacities">
                     </ol>
-                
-                    <h3>Results</h3>
+
+                    <div class="divider"></div>
+                    <br>
+                    <h3><i class="fas fa-poll-h"></i> Results</h3>
                     <button class="btn" id="submit" type="button">Generate results!</button>
                     <br>
                     <br>
