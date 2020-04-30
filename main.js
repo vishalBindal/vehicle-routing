@@ -66,6 +66,9 @@ resetButton.onclick = function(event){
     noOfLocations = 0;
     depot = -1;
     depotElement.innerHTML = "Not set";
+    for(let m of markers)
+        m.setMap(null);
+    markers = [];
 }
 
 let removeLocation = function(id)
@@ -83,6 +86,18 @@ let removeLocation = function(id)
         depot = -1;
         depotElement.innerHTML = 'Not set';
     }
+
+    for(let m of markers)
+    {
+        if(parseInt(m.label)==idint)
+            m.setMap(null);
+        else if(parseInt(m.label) > idint)
+            {
+                m.set('label',(parseInt(m.label) - 1).toString());
+            }
+    }
+
+    markers.splice(idint - 1, 1);
 
     let ls = document.querySelectorAll('#locations > li');
     for(let l of ls)
@@ -124,7 +139,7 @@ let submitButton = document.getElementById('submit');
 submitButton.onclick = function(event){
     cfg['addresses'] = coordinates;
     cfg['num_vehicles'] = document.getElementById('num_veh').value;
-    cfg['depot'] = depot;
+    cfg['depot'] = depot - 1;
 
     let ls = document.querySelectorAll('.req-input');
     let requirements = [];
@@ -186,32 +201,36 @@ function parseTuple(t) {
     return JSON.parse(t.replace(/\(/g, "[").replace(/\)/g, "]"));
 }
 
+let markers = [];
+
 function initMap() {
-    var myLatlng = {lat: 28.548700, lng: 77.183601};
-
-    var map = new google.maps.Map(
-        document.getElementById('map'), {zoom: 16, center: myLatlng});
-
     // Create the initial InfoWindow.
-    var infoWindow = new google.maps.InfoWindow(
-        {content: 'Click the map to get Lat/Lng!', position: myLatlng});
-    infoWindow.open(map);
+    // var infoWindow = new google.maps.InfoWindow(
+    //     {content: 'Click the map to get Lat/Lng!', position: myLatlng});
+    // infoWindow.open(map);
+    let HauzKhasLatlng = {lat: 28.548700, lng: 77.183601};
+
+    let map = new google.maps.Map(
+        document.getElementById('map'), {zoom: 16, center: HauzKhasLatlng});
 
     // Configure the click listener.
     map.addListener('click', function(mapsMouseEvent) {
       // Close the current InfoWindow.
-      infoWindow.close();
+    //   infoWindow.close();
 
       // Create a new InfoWindow.
-      infoWindow = new google.maps.InfoWindow({position: mapsMouseEvent.latLng});
-      infoWindow.setContent(mapsMouseEvent.latLng.toString());
-      infoWindow.open(map);
+    //   infoWindow = new google.maps.InfoWindow({position: mapsMouseEvent.latLng});
+    //   infoWindow.setContent(mapsMouseEvent.latLng.toString());
+    //   infoWindow.open(map);
 
       let coordinate = parseTuple(mapsMouseEvent.latLng.toString());
       console.log(coordinate);
 
     coordinates.push(coordinate);
     noOfLocations +=1;
+
+    addMarker(mapsMouseEvent.latLng, noOfLocations, map);
+
     let newLocationElem = sampleLocationElement.cloneNode(true);
     newLocationElem.id = "location-"+noOfLocations;
     newLocationElem.getElementsByClassName('coordinates')[0].innerHTML = "[" + coordinate.toString() + "]";
@@ -219,3 +238,13 @@ function initMap() {
     locationListWrapper.append(newLocationElem);
     });
   }
+
+let addMarker = function(position, label, map)
+{
+    let marker = new google.maps.Marker({
+        position: position,
+        label: label.toString(),
+        map: map
+    });
+    markers.push(marker);
+}
