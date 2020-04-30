@@ -183,6 +183,7 @@ let updateResults = ((response)=>
             let str = `<div class="card shadowContainer"><div class="card-body"><strong>Vehicle ${i+1}</strong>\
                     Round-trip time (minutes): ${(distances[i]/60).toFixed(2)} <br>\
                     Load carried: ${loads[i]} <br>\
+                    <a href="${get_directions_url(routes[i])}" target="_blank">Get directions</a><br>\
                     Route:<br>`;
             for(let j=0;j<routes[i].length-1;j++)
                 str += `Location ${routes[i][j]+1} (Load: ${load_details[i][j]}) -> `;
@@ -252,4 +253,16 @@ let addMarker = function(position, label, map)
         map: map
     });
     markers.push(marker);
+}
+
+let get_directions_url = function(route)
+{
+    let url = 'https://www.google.com/maps/dir/';
+    for(let location of route)
+    {
+        let coordinate = coordinates[location];
+        let str = coordinate[0].toString() + ','+coordinate[1].toString()+'/';
+        url += str;
+    }
+    return url;
 }
