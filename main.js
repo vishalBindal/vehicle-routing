@@ -33,8 +33,6 @@ let sendRequest = function(){
             let response = JSON.parse(xhr.response);
             console.log(response);
             updateResults(response);
-            if(response.solution)
-                displayPath(response.routes);
             window.scrollTo(0,document.body.scrollHeight);
         }       
     }
@@ -205,8 +203,6 @@ function parseTuple(t) {
 
 let markers = [];
 
-let mapG = null;
-
 function initMap() {
     // Create the initial InfoWindow.
     // var infoWindow = new google.maps.InfoWindow(
@@ -217,7 +213,6 @@ function initMap() {
     let map = new google.maps.Map(
         document.getElementById('map'), {zoom: 16, center: HauzKhasLatlng});
 
-    mapG = map;
     // Configure the click listener.
     map.addListener('click', function(mapsMouseEvent) {
       // Close the current InfoWindow.
@@ -252,21 +247,4 @@ let addMarker = function(position, label, map)
         map: map
     });
     markers.push(marker);
-}
-
-let displayPath = function(routes){
-    for(let route of routes)
-    {
-        let path = [];
-        for(let location of route)
-            path.push(markers[parseInt(location)].get('position'));
-        let roadPath = new google.maps.Polyline({
-            path: path,
-            geodesic: true,
-            strokeColor: '#FF0000',
-            strokeOpacity: 1.0,
-            strokeWeight: 2,
-            map:mapG
-            });
-    }
 }
