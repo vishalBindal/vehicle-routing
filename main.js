@@ -57,7 +57,7 @@ let sendRequest = function(){
 }
 
 let sampleCapacityElement = document.createElement('li');
-sampleCapacityElement.innerHTML = `<div class="input-group" style="display: inline-flex !important;"><label class="input-group-addon addon-sm" for="cap">Capacity:</label><input type="number" value="0" class="form-input input-sm capacity-input"></div>`;
+sampleCapacityElement.innerHTML = `<div class="input-group" style="display: inline-flex !important;"><label class="input-group-addon addon-sm" for="cap">Capacity:</label><input type="number" value="0" min="0" class="form-input input-sm capacity-input"></div>`;
 
 let capacityListWrapper = document.getElementById('capacities');
 
@@ -65,7 +65,7 @@ let sampleLocationElement = document.createElement('li');
 sampleLocationElement.innerHTML = '<div class="card shadowContainer" style="width: 95%;">\
                                 <div class="card-body">\
                                 <strong> Location <span class="location-no"></span> <span class="coordinates"></span></strong><br>\
-                                <label for="req">Requirement: </label><input type="number" value="0" class="req-input form-input">\
+                                <label for="req">Requirement: </label><input type="number" value="0" min="0" class="req-input form-input">\
                                 </div>\
                                 <div class="card-footer">\
                                 <button class="btn btn-error btn-sm" type="button" onclick="removeLocation(this.parentNode.parentNode.parentNode.id)">Discard location</button>\
