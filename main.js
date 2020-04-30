@@ -39,7 +39,7 @@ let sendRequest = function(){
 }
 
 let sampleCapacityElement = document.createElement('li');
-sampleCapacityElement.innerHTML = `<div class="input-group" style="display: inline-flex !important;"><label class="input-group-addon addon-sm" for="cap">Capacity:</label><input type="number" value="0" class="form-input input-sm"></div>`;
+sampleCapacityElement.innerHTML = `<div class="input-group" style="display: inline-flex !important;"><label class="input-group-addon addon-sm" for="cap">Capacity:</label><input type="number" value="0" class="form-input input-sm capacity-input"></div>`;
 
 let capacityListWrapper = document.getElementById('capacities');
 
@@ -50,8 +50,8 @@ sampleLocationElement.innerHTML = '<div class="card shadowContainer" style="widt
                                 <label for="req">Requirement: </label><input type="number" value="0" class="req-input form-input">\
                                 </div>\
                                 <div class="card-footer">\
-                                <button class="btn btn-error btn-sm" type="button" onclick="removeLocation(this.parentNode.id)">Discard location</button>\
-                                <button class="btn btn-success btn-sm" type="button" onclick="markDepot(this.parentNode.id)">Mark as depot</button>\
+                                <button class="btn btn-error btn-sm" type="button" onclick="removeLocation(this.parentNode.parentNode.parentNode.id)">Discard location</button>\
+                                <button class="btn btn-success btn-sm" type="button" onclick="markDepot(this.parentNode.parentNode.parentNode.id)">Mark as depot</button>\
                                 </div>\
                                 </div>';
 let locationListWrapper = document.getElementById('locations');
@@ -126,13 +126,13 @@ submitButton.onclick = function(event){
     cfg['num_vehicles'] = document.getElementById('num_veh').value;
     cfg['depot'] = depot;
 
-    let ls = document.querySelectorAll('#locations > li > input');
+    let ls = document.querySelectorAll('.req-input');
     let requirements = [];
     for (let inp of ls)
         requirements.push(inp.value)
     cfg['demands'] = requirements
 
-    ls = document.querySelectorAll('#capacities > li > input');
+    ls = document.querySelectorAll('.capacity-input');
     let capacities = [];
     for (let inp of ls)
         capacities.push(inp.value)
