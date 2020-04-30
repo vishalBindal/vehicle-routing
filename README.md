@@ -1,5 +1,7 @@
 # Vehicle routing!
 
+![logo](src/images/logo.png)
+
 This is an implementation of the capacitated vehicle routing problem (CVRP), which can be used to determine delivery of groceries given the following data:
 - Coordinates (lat/long) of locations, including the depot.
 - The demand at each location
@@ -25,10 +27,29 @@ Replace your_api_key with your own API key enabled with Google distance matrix A
 Replace API_KEY in the string with your own API key enabled with Google maps Javascript API.
 
 - Run:
+
+Check python version
 ```
-pip install ortools
-pip install falcon cython gunicorn
-gunicorn vrp_api -b :16000 --reload
+python --version
+```
+**Note:** Make sure you have python 3.7 or less installed as optools is not supported on python 3.8 yet
+
+Make a virtual environment (optional, and required python 3.3 or above)
+```
+$ python -m venv venv
+$ source venv/bin/activate
+```
+
+To Run
+```
+$ pip install ortools
+$ pip install falcon cython gunicorn
+$ gunicorn vrp_api -b :16000 --reload
+```
+
+After using, if using virtual environment, deavtivate it
+```
+$ deactivate
 ```
 
 - Open index.html in your browser. Click on the desired locations in the map and enter the demand associated with each location. Enter the number of vehicles, the capacity of each vehicle and the depot number. Click on 'generate results', and if everything is set up correctly you should see the results.

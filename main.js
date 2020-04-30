@@ -268,3 +268,11 @@ let addMarker = function(position, label, map)
     });
     markers.push(marker);
 }
+
+let model1 = document.getElementById("modal1-challenge-statement");
+
+document.getElementById("model1-show-button").onclick = function() {model1.classList.add("active");};
+
+document.getElementById("model1-close-button2").onclick = function(){model1.classList.remove("active");};
+
+document.getElementById("model1-close-button").onclick = function(){model1.classList.remove("active");};
