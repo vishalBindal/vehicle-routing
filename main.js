@@ -8,7 +8,9 @@ let cfg = {
     'vehicle_capacities' : []
 }
 
-let post_url = "http://localhost:16000/vrpapi"
+let post_url = "https://evening-sierra-28829.herokuapp.com/vrpapi"
+// If running locally, comment the above url and use the below one
+// let post_url = "http://localhost:16000/vrpapi"
 
 let changeDepotInList = function(idint) {
     // clearing all the background colors
