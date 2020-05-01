@@ -37,6 +37,7 @@ let sendRequest = function(){
         console.log(json);
         let xhr = new XMLHttpRequest();
         xhr.open('POST', post_url);
+        xhr.setRequestHeader('Access-Control-Allow-Origin', 'https://evening-sierra-28829.herokuapp.com/')
         xhr.send(json);
         
         xhr.onload = function(){
