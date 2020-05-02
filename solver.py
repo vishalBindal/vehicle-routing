@@ -74,10 +74,15 @@ def main(cfg):
     # Instantiate the data problem.
     data = create_data_model(cfg)
     print(data)
-
+    if len(data['distance_matrix'])==0:
+        result = {
+            "solution":False,
+            "error-message":"unable to calculate distance matrix"
+        }
+        return result
     # Create the routing index manager.
     manager = pywrapcp.RoutingIndexManager(len(data['distance_matrix']),
-                                           data['num_vehicles'], data['depot'])
+                                        data['num_vehicles'], data['depot'])
 
     # Create Routing Model.
     routing = pywrapcp.RoutingModel(manager)
@@ -136,3 +141,4 @@ def main(cfg):
             "solution":False
         }
         return result
+
