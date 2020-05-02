@@ -1,6 +1,7 @@
 <img src="src/images/logo.png" alt="CampusBidLogo" height="50px">
 
-Frontend of the website is hosted at https://vishalbindal.github.io/vehicle-routing . **Note:** backend is not working currently thus see Setup Instructions below for deloying on localhost
+## Live demo
+https://vishalbindal.github.io/vehicle-routing
 
 ## Description
 This is an implementation of the capacitated vehicle routing problem (CVRP), which can be used to determine delivery of groceries given the following data:
