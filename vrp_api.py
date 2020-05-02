@@ -2,7 +2,7 @@ import falcon
 import json
 import json_answer as vrpjson
  
-ALLOWED_ORIGINS = ['https://vishalbindal.github.io', 'http://vishalbindal.github.io',
+ALLOWED_ORIGINS = ['http://localhost','https://vishalbindal.github.io', 'http://vishalbindal.github.io',
 'https://vishalbindal.github.io/vehicle-routing', 'http://vishalbindal.github.io/vehicle-routing',
  'https://vishalbindal.github.io/', 'https://vishalbindal.github.io/vehicle-routing/', 
 'http://vishalbindal.github.io/vehicle-routing/', 'http://vishalbindal.github.io/']
@@ -29,17 +29,12 @@ class VehicleRoutingResource(object):
  
     def on_post(self, req, resp):
         try:
-            print("starting ..")
             body = req.stream.read()
-            print("\n\n",body,"\n\n")
             body_json = json.loads(body.decode('utf-8'))
             cfg = body_json["cfg"]
             resp.status = falcon.HTTP_200
-            print("here")
             resp.body = vrpjson.main(cfg)
-            print("no errors")
         except:
-            print("errors")
             result = {"solution":False, "error-messsage":"Invalid request cfg data"}
             json_body = json.dumps(result, sort_keys=True)
             resp.status = falcon.HTTP_200
