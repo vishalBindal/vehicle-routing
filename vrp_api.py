@@ -2,14 +2,22 @@ import falcon
 import json
 import json_answer as vrpjson
  
-ALLOWED_ORIGINS = ['http://localhost']
+ALLOWED_ORIGINS = ['http://localhost','https://vishalbindal.github.io', 'http://vishalbindal.github.io',
+'https://vishalbindal.github.io/vehicle-routing', 'http://vishalbindal.github.io/vehicle-routing',
+ 'https://vishalbindal.github.io/', 'https://vishalbindal.github.io/vehicle-routing/', 
+'http://vishalbindal.github.io/vehicle-routing/', 'http://vishalbindal.github.io/']
  
 class CorsMiddleware(object):
     def process_request(self, request, response):
         origin = request.get_header('Origin')
         if origin is not None and origin in ALLOWED_ORIGINS:
             response.set_header('Access-Control-Allow-Origin', origin)
-        response.set_header('Access-Control-Allow-Origin', '*')
+        else:
+            response.set_header('Access-Control-Allow-Origin', '*')
+        response.set_header("Access-Control-Allow-Credentials", "true")
+        response.set_header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
+        response.set_header("Access-Control-Allow-Headers", 
+        "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers")
 
 class VehicleRoutingResource(object):
     def on_get(self, req, resp):
@@ -22,20 +30,18 @@ class VehicleRoutingResource(object):
     def on_post(self, req, resp):
         try:
             body = req.stream.read()
-            print("\n\n",body,"\n\n")
             body_json = json.loads(body.decode('utf-8'))
             cfg = body_json["cfg"]
-        except KeyError:
-            raise falcon.HTTPBadRequest(
-            'Missing Config',
-            'A config (cfg) must be submitted in the request body.')
+            resp.status = falcon.HTTP_200
+            resp.body = vrpjson.main(cfg)
+        except:
+            result = {"solution":False, "error-messsage":"Invalid request cfg data"}
+            json_body = json.dumps(result, sort_keys=True)
+            resp.status = falcon.HTTP_200
+            resp.body = json_body
  
-        resp.status = falcon.HTTP_200
-        resp.body = vrpjson.main(cfg)
- 
-# falcon.API instances are callable WSGI apps
+
 app = application = falcon.API(middleware=[CorsMiddleware()])
- 
 # Resources are represented by long-lived class instances
 vrpapi = VehicleRoutingResource()
  
