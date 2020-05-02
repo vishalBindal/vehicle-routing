@@ -265,7 +265,7 @@ function initMap() {
 
     let newLocationElem = sampleLocationElement.cloneNode(true);
     newLocationElem.id = "location-"+noOfLocations;
-    newLocationElem.getElementsByClassName('coordinates')[0].innerHTML = "[" + coordinate.toString() + "]";
+    newLocationElem.getElementsByClassName('coordinates')[0].innerHTML = "[" + coordinate[0].toString() +', '+ coordinate[1].toString()+ "]";
     newLocationElem.getElementsByClassName('location-no')[0].innerHTML = noOfLocations;
     locationListWrapper.append(newLocationElem);
     });
